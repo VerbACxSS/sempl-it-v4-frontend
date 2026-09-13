@@ -1,0 +1,34 @@
+<it-footer>
+  <ng-container header>
+    <div class="it-brand-wrapper">
+      <a [href]="'/home'">
+        <img class="logo p-1 p-md-2 me-2" ngSrc="./assets/logo.svg" title="verbacxss-logo" alt="verbacxss-logo" height="100" width="100" priority/>
+        <div class="it-brand-text">
+          <div class="it-brand-title">SEMPL-IT</div>
+        </div>
+      </a>
+    </div>
+  </ng-container>
+  <!-- Links -->
+  <ng-container contacts>
+    <div class="row justify-content-center">
+      @for (menuItem of MENU_ITEMS; track $index) {
+        <div class="col-12 col-md-4 col-lg-2 p-2 p-lg-0">
+          <h4 class="h6 text-center mb-0"
+              [class.text-decoration-underline]="router.url.includes(menuItem.path)">
+            <a [href]="menuItem.path" title="Vai alla pagina: {{menuItem.name}}">{{menuItem.name}}</a>
+          </h4>
+        </div>
+      }
+    </div>
+  </ng-container>
+  <!-- Small links -->
+  <ng-container small-links>
+    @for (item of SMALL_LINK_ITEMS; track $index) {
+      <li class="list-inline-item"
+          [class.text-decoration-underline]="this.router.url.includes(item.path)">
+        <a [href]="item.path">{{ item.name }}</a>
+      </li>
+    }
+  </ng-container>
+</it-footer>

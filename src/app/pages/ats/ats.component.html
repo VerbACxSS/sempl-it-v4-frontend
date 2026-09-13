@@ -1,0 +1,138 @@
+<section class="section section-muted" aria-describedby="text-simplifier-title">
+  <div class="section-content">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h2 class="h3 text-center mb-4" id="text-simplifier-title">Semplifica un testo amministrativo <it-icon name="help-circle" size="xs" (click)="simplificationTutorialModal.open()"></it-icon></h2>
+        </div>
+      </div>
+
+      <form [formGroup]="simplificationForm" (ngSubmit)="simplify()">
+        <div class="row">
+          <div class="col">
+            <it-textarea label="Testo da semplificare"
+                         formControlName="text"
+                         [rows]="5"
+                         (keyup)="FormUtils.autogrow($event)"
+                         [description]="fieldLengthDescription('text')"></it-textarea>
+
+            <it-select
+              label="Semplificazione adatta a:"
+              formControlName="target"
+              defaultOption="Seleziona un elemento">
+              <option value="expert">Esperti</option>
+              <option value="common">Utenti comuni</option>
+            </it-select>
+
+            <it-checkbox label="Acconsento al salvataggio e al trattamento dei dati inseriti per i soli scopi di ricerca"
+                         formControlName="consent"
+                         toggle="true"></it-checkbox>
+
+            <div class="d-flex justify-content-center flex-nowrap">
+              <button class="w-50 me-2" type="submit" itButton="primary" size="sm">Semplifica</button>
+              <button class="w-50 ms-2" type="reset" itButton="danger" size="sm">Reset</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+@if (this.simplifiedText && this.metrics1 && this.metrics2) {
+  <section class="section">
+    <div class="section-content">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h2 class="h3 text-center mb-4" id="simplified-title">Semplificazione</h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="card-wrapper card-space">
+              <it-card shadow="true" borderBottom="true">
+                <h5 class="card-title h5 text-center">Processo di semplificazione <it-icon name="help-circle" size="xs" (click)="simplificationInfoModal.open()"></it-icon></h5>
+                <it-tab-container>
+                  <it-tab-item label="Step 1">
+                    <h6 class="h6 text-center">Proofreading</h6>
+                    <p class="text-justify" [innerHTML]="parseText(simplifications.proofreading)"></p>
+                  </it-tab-item>
+                  <it-tab-item label="Step 2">
+                    <h6 class="h6 text-center">Normalizzazione riferimenti normativi</h6>
+                    <p class="text-justify" [innerHTML]="parseText(simplifications.lex)"></p>
+                  </it-tab-item>
+                  <it-tab-item label="Step 3">
+                    <h6 class="h6 text-center">Connettivi difficili</h6>
+                    <p class="text-justify" [innerHTML]="parseText(simplifications.connectives)"></p>
+                  </it-tab-item>
+                  <it-tab-item label="Step 4">
+                    <h6 class="h6 text-center">Espressioni burocratiche</h6>
+                    <p class="text-justify" [innerHTML]="parseText(simplifications.expressions)"></p>
+                  </it-tab-item>
+                  <it-tab-item label="Step 5">
+                    <h6 class="h6 text-center">Divisione frasi</h6>
+                    <p class="text-justify" [innerHTML]="parseText(simplifications.sentence_splitter)"></p>
+                  </it-tab-item>
+                  <it-tab-item label="Step 6">
+                    <h6 class="h6 text-center">Nominalizzazioni</h6>
+                    <p class="text-justify" [innerHTML]="parseText(simplifications.nominalizations)"></p>
+                  </it-tab-item>
+                  <it-tab-item label="Step 7">
+                    <h6 class="h6 text-center">Verbi passivi</h6>
+                    <p class="text-justify" [innerHTML]="parseText(simplifications.verbs)"></p>
+                  </it-tab-item>
+                  <it-tab-item label="Step 8" [active]="target == 'expert'">
+                    <h6 class="h6 text-center">Riorganizzazione frase</h6>
+                    <p class="text-justify" [innerHTML]="parseText(simplifications.sentence_reorganizer)"></p>
+                  </it-tab-item>
+                  @if (target == 'common') {
+                    <it-tab-item label="Step 9" [active]="target == 'common'">
+                      <h6 class="h6 text-center">Spiega e migliora</h6>
+                      <p class="text-justify" [innerHTML]="parseText(simplifications.explain)"></p>
+                    </it-tab-item>
+                  }
+                </it-tab-container>
+              </it-card>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="d-flex flex-column justify-items-center align-items-center">
+            <h4 class="h4 text-center mb-4">Non sei soddisfatto della semplificazione?</h4>
+            <button class="text-center" itButton="primary" size="sm" (click)="resimplify()">Semplifica di nuovo</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col justify-items-center">
+            <it-callout [color]="'warning'" [label]="'Attenzione'">
+              <p>Si raccomanda di revisionare il testo semplificato prodotto da SEMPL-IT, in quanto potrebbe contenere errori o imprecisioni.</p>
+            </it-callout>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="section-content">
+      <div class="container">
+
+        <div class="row">
+          <div class="col">
+            <h2 class="h3 text-center mb-4" id="metrics-title">Confronto</h2>
+          </div>
+        </div>
+
+        <app-text-comparator [text1]="text" [text2]="simplifiedText" [metrics1]="metrics1" [metrics2]="metrics2" [similarity]="similarity" [diff]="diff"></app-text-comparator>
+      </div>
+    </div>
+  </section>
+}
+
+<app-simplification-info-modal #simplificationInfoModal></app-simplification-info-modal>
+
+<app-simplification-tutorial-modal #simplificationTutorialModal></app-simplification-tutorial-modal>

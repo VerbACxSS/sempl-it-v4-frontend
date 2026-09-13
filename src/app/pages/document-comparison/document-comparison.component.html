@@ -1,0 +1,59 @@
+<section class="section section-muted" aria-describedby="text-analyzer-title">
+  <div class="section-content">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h2 class="h3 text-center mb-4" id="text-analyzer-title">Confronta due testi amministrativi <it-icon name="help-circle" size="xs" (click)="comparisonTutorialModal.open()"></it-icon></h2>
+        </div>
+      </div>
+
+      <form  [formGroup]="analyzerForm" (ngSubmit)="compare()">
+        <div class="row">
+          <div class="col-sm-6 col-12">
+            <it-textarea label="Testo originale"
+                         formControlName="text1"
+                         [rows]="5"
+                         (keyup)="FormUtils.autogrow($event)"
+                         [description]="fieldLengthDescription('text1')"></it-textarea>
+          </div>
+          <div class="col-sm-6 col-12">
+            <it-textarea label="Testo semplificato"
+                         formControlName="text2"
+                         [rows]="5"
+                         (keyup)="FormUtils.autogrow($event)"
+                         [description]="fieldLengthDescription('text2')"></it-textarea>
+          </div>
+        </div>
+
+        <it-checkbox label="Acconsento al salvataggio e al trattamento dei dati inseriti per i soli scopi di ricerca"
+                     formControlName="consent"
+                     toggle="true"></it-checkbox>
+
+        <div class="d-flex justify-content-center flex-nowrap">
+          <button class="w-50 me-2" type="submit" itButton="primary" size="sm">Confronta</button>
+          <button class="w-50 ms-2" type="reset" itButton="danger" size="sm">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+@if (this.metrics1 && this.metrics2) {
+  <section class="section" aria-describedby="result-title">
+    <div class="section-content">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h2 class="h3 text-center mb-4" id="result-title">Confronto</h2>
+          </div>
+        </div>
+
+        <app-text-comparator [text1]="text1" [text2]="text2"
+                             [metrics1]="metrics1" [metrics2]="metrics2"
+                             [similarity]="similarity" [diff]="diff"></app-text-comparator>
+      </div>
+    </div>
+  </section>
+}
+
+<app-comparison-tutorial-modal #comparisonTutorialModal></app-comparison-tutorial-modal>
