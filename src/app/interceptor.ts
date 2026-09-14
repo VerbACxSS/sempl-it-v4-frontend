@@ -4,6 +4,8 @@ import {delay, finalize, Observable, queueScheduler, timeout} from "rxjs";
 import {HttpLoaderService} from './services/http-loader.service';
 import {environment} from '../environments/environment';
 
+const REQUEST_TIMEOUT_MINUTES = 20;
+
 export const backendInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
   const httpLoaderService = inject(HttpLoaderService);
 
@@ -17,7 +19,7 @@ export const backendInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, nex
   // Send request with Accept-Language Header
   return next(req)
     .pipe(
-      timeout(2 * 60 * 1000),
+      timeout(REQUEST_TIMEOUT_MINUTES * 60 * 1000),
       delay(100, queueScheduler),
       finalize(() => {
         httpLoaderService.finishRequest();
