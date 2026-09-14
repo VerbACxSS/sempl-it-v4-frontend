@@ -62,7 +62,7 @@ export class AtsComponent implements AfterViewInit {
     this.simplificationForm = new FormGroup({
       text: new FormControl('', [Validators.required, Validators.maxLength(4000)]),
       target: new FormControl('', [Validators.required, Validators.pattern('common|expert')]),
-      consent: new FormControl(true, [Validators.required])
+      consent: new FormControl(false, [Validators.required])
     });
   }
 

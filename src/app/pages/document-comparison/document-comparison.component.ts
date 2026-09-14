@@ -41,7 +41,7 @@ export class DocumentComparisonComponent implements AfterViewInit {
     this.analyzerForm = new FormGroup({
       text1: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
       text2: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
-      consent: new FormControl(true, [Validators.required])
+      consent: new FormControl(false, [Validators.required])
     });
   }
 
