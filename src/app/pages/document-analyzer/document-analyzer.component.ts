@@ -36,7 +36,7 @@ export class DocumentAnalyzerComponent implements AfterViewInit {
               private alertService: AlertService,
               private analysisService: AnalysisService) {
     this.analyzerForm = new FormGroup({
-      text: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
+      text: new FormControl('', [Validators.required, Validators.maxLength(4000)]),
       consent: new FormControl(false, [Validators.required])
     });
   }
@@ -47,7 +47,7 @@ export class DocumentAnalyzerComponent implements AfterViewInit {
 
   public fieldLengthDescription(field: string): string {
     const fieldLength = this.analyzerForm.get(field)?.value.length;
-    return fieldLength ? `${fieldLength}/3000` : '';
+    return fieldLength ? `${fieldLength}/4000` : '';
   }
 
   public analyze(): void {
